@@ -20,19 +20,23 @@ public class RoomDTO {
     private Integer hotelId;
     private Integer number;
     private double price;
+    private String type;
+
 
     public RoomDTO(Room room) {
         this.id = room.getId();
         this.hotelId = room.getHotel().getId();
         this.number = room.getNumber();
         this.price = room.getPrice();
+        this.type = room.getType();
     }
 
-    public RoomDTO(Integer id, Integer hotelId, double price, Integer number) {
+    public RoomDTO(Integer id, Integer hotelId, double price, Integer number, String type) {
         this.id = id;
         this.hotelId = hotelId;
         this.price = price;
         this.number = number;
+        this.type = type;
     }
 
     public static List<RoomDTO> toDTOList(List<Room> resultList) {

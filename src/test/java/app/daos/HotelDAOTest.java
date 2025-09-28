@@ -27,7 +27,7 @@ class HotelDAOTest {
 
     @Test
     void testCreateAndGetById() {
-        HotelDTO dto = new HotelDTO(null, "Hotel California", "California st. 8840", 221, 5);
+        HotelDTO dto = new HotelDTO(null, "Hotel California", "California st. 8840", 221, 5.0);
         HotelDTO saved = dao.createHotel(dto);
 
         assertNotNull(saved.getId());
@@ -39,8 +39,8 @@ class HotelDAOTest {
 
     @Test
     void testGetAllHotels() {
-        dao.createHotel(new HotelDTO(null, "Hotel California", "California st. 8840", 221, 5));
-        dao.createHotel(new HotelDTO(null, "Hotel Balifornia", "Balifornia st. 8840", 221, 5));
+        dao.createHotel(new HotelDTO(null, "Hotel California", "California st. 8840", 221, 5.0));
+        dao.createHotel(new HotelDTO(null, "Hotel Balifornia", "Balifornia st. 8840", 221, 5.0));
 
         List<HotelDTO> list = dao.getAllHotels();
         assertEquals(2, list.size());
@@ -48,8 +48,8 @@ class HotelDAOTest {
 
     @Test
     void testUpdateHotel() {
-        HotelDTO saved = dao.createHotel(new HotelDTO(null, "Hotel Aalifornia", "Aalifornia st. 8840", 221, 5));
-        HotelDTO updated = dao.createHotel(new HotelDTO(saved.getId(), "Botel", "California st. 8840", 33, 5));
+        HotelDTO saved = dao.createHotel(new HotelDTO(null, "Hotel Aalifornia", "Aalifornia st. 8840", 221, 5.0));
+        HotelDTO updated = dao.createHotel(new HotelDTO(saved.getId(), "Botel", "California st. 8840", 33, 5.0));
 
         assertEquals("Botel", updated.getName());
         assertEquals(33, updated.getRooms());
@@ -57,7 +57,7 @@ class HotelDAOTest {
 
     @Test
     void testDeleteHotel() {
-        HotelDTO saved = dao.createHotel(new HotelDTO(null, "Hotel Danglatere", "Et sted i københavn", 221, 5));
+        HotelDTO saved = dao.createHotel(new HotelDTO(null, "Hotel Danglatere", "Et sted i københavn", 221, 5.0));
         dao.deleteHotel(saved.getId());
 
         assertNull(dao.getHotelById(saved.getId()));

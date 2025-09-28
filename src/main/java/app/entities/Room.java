@@ -25,6 +25,9 @@ public class Room {
     @Column(name="price", nullable = false)
     private double price;
 
+    @Column(name="type", nullable = false)
+    private String type;
+
     // Relationer m:1
     @ManyToOne
     @Setter
@@ -36,6 +39,7 @@ public class Room {
         this.id = dto.getId();
         this.hotelId = dto.getHotelId();
         this.number = dto.getNumber();
+        this.type = dto.getType();
         this.price = dto.getPrice();
         this.hotel = hotel;
     }
