@@ -1,6 +1,7 @@
 package app.entities;
 
 import app.dtos.HotelDTO;
+import app.dtos.RoomDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,12 +32,13 @@ public class Room {
     @EqualsAndHashCode.Exclude
     private Hotel hotel;
 
-    public Room(HotelDTO dto) {
+    public Room(RoomDTO dto, Hotel hotel) {
         this.id = dto.getId();
-        this.hotelId = hotel.getId();
-        this.number = dto.
+        this.hotelId = dto.getHotelId();
+        this.number = dto.getNumber();
+        this.price = dto.getPrice();
+        this.hotel = hotel;
     }
-
 
 }
 
