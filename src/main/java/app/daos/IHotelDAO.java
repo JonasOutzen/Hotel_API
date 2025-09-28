@@ -1,20 +1,20 @@
 package app.daos;
 
-import app.entities.Hotel;
-import app.entities.Room;
-
+import app.dtos.HotelDTO;
+import app.dtos.RoomDTO;
 import java.util.List;
 
 public interface IHotelDAO {
 
-    List<Hotel> getAllHotels();
-    Hotel getHotelById(int id);
-    Hotel createHotel(Hotel hotel);
-    Hotel updateHotel(Hotel hotel);
+    // Hotel CRUD
+    List<HotelDTO> getAllHotels();
+    HotelDTO getHotelById(int id);
+    HotelDTO createHotel(HotelDTO dto);
+    HotelDTO updateHotel(int id, HotelDTO dto);
     void deleteHotel(int id);
 
-    // Room operations
-    Hotel addRoom(Hotel hotel, Room room);
-    Hotel removeRoom(Hotel hotel, Room room);
-    List<Room> getRoomsForHotel(Hotel hotel);
+    // Room management
+    HotelDTO addRoom(int hotelId, RoomDTO roomDto);
+    HotelDTO removeRoom(int hotelId, int roomId);
+    List<RoomDTO> getRoomsForHotel(int hotelId);
 }

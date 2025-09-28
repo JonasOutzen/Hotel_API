@@ -1,28 +1,31 @@
 package app.daos;
 
 import app.dtos.HotelDTO;
+import app.dtos.RoomDTO;
 import app.entities.Hotel;
+import app.entities.Room;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HotelDAO {
+public class HotelDAO implements IHotelDAO {
 
     private static HotelDAO instance;
     private static EntityManagerFactory emf;
 
     private HotelDAO() {}
 
-    public static HotelDAO getInstance(EntityManagerFactory emf) {
+    public static HotelDAO getInstance(EntityManagerFactory _emf) {
         if (instance == null) {
             instance = new HotelDAO();
-            HotelDAO.emf = emf;
+            emf = _emf;
         }
         return instance;
     }
 
+    @Override
     public List<HotelDTO> getAllHotels() {
         try (var em = emf.createEntityManager()) {
             TypedQuery<Hotel> query = em.createQuery("SELECT h FROM Hotel h", Hotel.class);
@@ -30,7 +33,16 @@ public class HotelDAO {
         }
     }
 
-    public HotelDTO create(HotelDTO dto) {
+    @Override
+    public HotelDTO getHotelById(int id) {
+        try (var em = emf.createEntityManager()) {
+            var entity = em.find(Hotel.class, id);
+            return (entity != null) ? new HotelDTO(entity) : null;
+        }
+    }
+
+    @Override
+    public HotelDTO createHotel(HotelDTO dto) {
         var entity = new Hotel(dto);
         try (var em = emf.createEntityManager()) {
             var tx = em.getTransaction();
@@ -41,23 +53,8 @@ public class HotelDAO {
         }
     }
 
-    public List<HotelDTO> createFromList(HotelDTO[] dtos) {
-        List<HotelDTO> createdList = new ArrayList<>();
-        for (HotelDTO dto : dtos) {
-            createdList.add(create(dto));
-        }
-        return createdList;
-    }
-
-    public HotelDTO getById(int id) {
-        try (var em = emf.createEntityManager()) {
-            var entity = em.find(Hotel.class, id);
-            return (entity != null) ? new HotelDTO(entity) : null;
-        }
-    }
-
-    // Note: returns null if entity not found
-    public HotelDTO update(int id, HotelDTO dto) {
+    @Override
+    public HotelDTO updateHotel(int id, HotelDTO dto) {
         try (var em = emf.createEntityManager()) {
             Hotel entity = em.find(Hotel.class, id);
             if (entity != null) {
@@ -75,7 +72,8 @@ public class HotelDAO {
         }
     }
 
-    public void delete(int id) {
+    @Override
+    public void deleteHotel(int id) {
         try (var em = emf.createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
@@ -87,6 +85,67 @@ public class HotelDAO {
         }
     }
 
+    @Override
+    public HotelDTO addRoom(int hotelId, RoomDTO roomDto) {
+        try (var em = emf.createEntityManager()) {
+            var tx = em.getTransaction();
+            tx.begin();
+
+            Hotel hotel = em.find(Hotel.class, hotelId);
+            if (hotel == null) {
+                tx.rollback();
+                return null;
+            }
+
+            Room room = new Room();
+            room.setNumber(roomDto.getNumber());
+            room.setPrice(roomDto.getPrice());
+            room.setHotel(hotel);
+
+            hotel.getRoomSet().add(room);
+
+            em.merge(hotel);
+            tx.commit();
+            return new HotelDTO(hotel);
+        }
+    }
+
+    @Override
+    public HotelDTO removeRoom(int hotelId, int roomId) {
+        try (var em = emf.createEntityManager()) {
+            var tx = em.getTransaction();
+            tx.begin();
+
+            Hotel hotel = em.find(Hotel.class, hotelId);
+            if (hotel == null) {
+                tx.rollback();
+                return null;
+            }
+
+            Room room = em.find(Room.class, roomId);
+            if (room != null && room.getHotel().getId() == hotelId) {
+                hotel.getRoomSet().remove(room);
+                em.remove(room);
+            }
+
+            em.merge(hotel);
+            tx.commit();
+            return new HotelDTO(hotel);
+        }
+    }
+
+    @Override
+    public List<RoomDTO> getRoomsForHotel(int hotelId) {
+        try (var em = emf.createEntityManager()) {
+            Hotel hotel = em.find(Hotel.class, hotelId);
+            if (hotel == null) {
+                return List.of();
+            }
+            return RoomDTO.toDTOList(hotel.getRoomSet().stream().toList());
+        }
+    }
+
+    // Extra helper (not in interface)
     public void deleteAll() {
         try (var em = emf.createEntityManager()) {
             var tx = em.getTransaction();
