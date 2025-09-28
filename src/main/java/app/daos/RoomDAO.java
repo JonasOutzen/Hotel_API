@@ -1,10 +1,12 @@
 package app.daos;
 
+import app.dtos.HotelDTO;
 import app.dtos.RoomDTO;
 import app.entities.Room;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RoomDAO {
@@ -48,6 +50,14 @@ public class RoomDAO {
             tx.commit();
             return new RoomDTO(entity);
         }
+    }
+
+    public List<RoomDTO> createRoomsFromList(RoomDTO[] dtos) {
+        List<RoomDTO> roomDTOS = new ArrayList<>();
+        for (RoomDTO dto : dtos) {
+            roomDTOS.add(createRoom(dto));
+        }
+        return roomDTOS;
     }
 
     public RoomDTO updateRoom(int id, RoomDTO dto) {

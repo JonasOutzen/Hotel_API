@@ -11,11 +11,12 @@ public class HotelRoutes {
 
     public EndpointGroup getRoutes(){
         return () -> {
-            get("/", controller::getAllSamples);
-            get("/{id}", controller::getSampleById);
-            post("/", controller::createSample);
-            put("/{id}", controller::updateSample);
-            delete("/{id}", controller::deleteSample);
+            get("/", controller::getAllHotels);
+            get("/{id}", controller::getHotelById);
+            get("/{id}/rooms", controller::getRoomsForHotel);
+            post("/", controller::createHotel);
+            put("/{id}", controller::updateHotel);
+            delete("/{id}", controller::deleteHotel);
 
         };
     }
