@@ -1,6 +1,5 @@
 package app.config;
 
-import app.entities.Sample;
 import app.utils.Utils;
 
 import jakarta.persistence.EntityManagerFactory;
@@ -42,7 +41,7 @@ public class HibernateConfig {
     // Register entities here (only needed if not using addPackage("app.entities"))
     private static void getAnnotationConfiguration(Configuration configuration) {
         configuration.addPackage("app.entities");
-        // configuration.addAnnotatedClass(Sample.class);
+        // configuration.addAnnotatedClass(Hotel.class);
     }
 
     private static EntityManagerFactory createEMF(boolean forTest) {
