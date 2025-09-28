@@ -1,5 +1,8 @@
 package app.config;
 
+import app.entities.Hotel;
+import app.entities.Room;
+import app.populators.HotelPopulator;
 import app.utils.Utils;
 
 import jakarta.persistence.EntityManagerFactory;
@@ -30,7 +33,7 @@ public class HibernateConfig {
     }
 
     public static EntityManagerFactory getEntityManagerFactoryForTest() {
-        if (emfTest == null){
+        if (emfTest == null) {
             setTest(true);
             emfTest = createEMF(getTest());  // No DB needed for test
         }
@@ -41,7 +44,8 @@ public class HibernateConfig {
     // Register entities here (only needed if not using addPackage("app.entities"))
     private static void getAnnotationConfiguration(Configuration configuration) {
         configuration.addPackage("app.entities");
-        // configuration.addAnnotatedClass(Hotel.class);
+        configuration.addAnnotatedClass(Hotel.class);
+        configuration.addAnnotatedClass(Room.class);
     }
 
     private static EntityManagerFactory createEMF(boolean forTest) {
@@ -66,8 +70,7 @@ public class HibernateConfig {
             SessionFactory sf = configuration.buildSessionFactory(serviceRegistry);
             EntityManagerFactory emf = sf.unwrap(EntityManagerFactory.class);
             return emf;
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
@@ -75,11 +78,14 @@ public class HibernateConfig {
 
     private static Properties setBaseProperties(Properties props) {
         props.put("hibernate.connection.driver_class", "org.postgresql.Driver");
-        props.put("hibernate.hbm2ddl.auto", "create");  // set to "update" when in production
+        props.put("hibernate.hbm2ddl.auto", "update");  // set to "update" when in production
         props.put("hibernate.current_session_context_class", "thread");
         props.put("hibernate.show_sql", "false");
         props.put("hibernate.format_sql", "false");
         props.put("hibernate.use_sql_comments", "false");
+
+        // Tilføjer auto-scan entities. Udkommenteret fordi det kan være en security risk
+        // props.put("hibernate.archive.autodetection", "class");
         return props;
     }
 

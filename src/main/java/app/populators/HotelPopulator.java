@@ -16,7 +16,7 @@ public class HotelPopulator {
             Hotel dAngleterre = Hotel.builder()
                     .name("Hotel d'Angleterre")
                     .address("Kongens Nytorv 34, 1050 København")
-                    .rooms(90)
+                    .rooms(30)
                     .stars(5)
                     .build();
 
@@ -69,7 +69,7 @@ public class HotelPopulator {
             Hotel admiral = Hotel.builder()
                     .name("Copenhagen Admiral Hotel")
                     .address("Toldbodgade 24-28, 1253 København")
-                    .rooms(366)
+                    .rooms(36)
                     .stars(4)
                     .build();
 
@@ -92,7 +92,7 @@ public class HotelPopulator {
             Hotel radisson = Hotel.builder()
                     .name("Radisson Collection Royal Hotel")
                     .address("Hammerichsgade 1, 1611 København")
-                    .rooms(260)
+                    .rooms(26)
                     .stars(5)
                     .build();
 
@@ -122,7 +122,7 @@ public class HotelPopulator {
             Hotel scandic = Hotel.builder()
                     .name("Scandic Palace Hotel")
                     .address("Rådhuspladsen 57, 1550 København")
-                    .rooms(169)
+                    .rooms(17)
                     .stars(4)
                     .build();
 
@@ -145,7 +145,7 @@ public class HotelPopulator {
             Hotel marriott = Hotel.builder()
                     .name("Copenhagen Marriott Hotel")
                     .address("Kalvebod Brygge 5, 1560 København")
-                    .rooms(406)
+                    .rooms(40)
                     .stars(5)
                     .build();
 
@@ -175,7 +175,7 @@ public class HotelPopulator {
             Hotel absalon = Hotel.builder()
                     .name("Absalon Hotel")
                     .address("Helgolandsgade 15, 1653 København")
-                    .rooms(161)
+                    .rooms(17)
                     .stars(4)
                     .build();
 
@@ -198,7 +198,7 @@ public class HotelPopulator {
             Hotel imperial = Hotel.builder()
                     .name("Imperial Hotel")
                     .address("Vester Farimagsgade 9, 1606 København")
-                    .rooms(304)
+                    .rooms(30)
                     .stars(4)
                     .build();
 
@@ -221,7 +221,7 @@ public class HotelPopulator {
             Hotel scandicFalkoner = Hotel.builder()
                     .name("Scandic Falkoner")
                     .address("Falkoner Allé 9, 2000 Frederiksberg")
-                    .rooms(334)
+                    .rooms(33)
                     .stars(4)
                     .build();
 
@@ -244,7 +244,7 @@ public class HotelPopulator {
             Hotel wakeup = Hotel.builder()
                     .name("Wakeup Copenhagen")
                     .address("Carsten Niebuhrs Gade 11, 1577 København")
-                    .rooms(510)
+                    .rooms(51)
                     .stars(3)
                     .build();
 
@@ -267,7 +267,7 @@ public class HotelPopulator {
             Hotel axelGuldsmeden = Hotel.builder()
                     .name("Axel Guldsmeden")
                     .address("Helgolandsgade 11, 1653 København")
-                    .rooms(212)
+                    .rooms(21)
                     .stars(4)
                     .build();
 

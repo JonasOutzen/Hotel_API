@@ -16,7 +16,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="hotel_id", nullable = false)
+    @Column(name="hotel_id", insertable = false, updatable = false)
     private int hotelId;
 
     @Column(name="number", nullable = false)
@@ -30,7 +30,7 @@ public class Room {
 
     // Relationer m:1
     @ManyToOne
-    @Setter
+    @JoinColumn(name = "hotel_id", nullable = false)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Hotel hotel;
@@ -42,6 +42,9 @@ public class Room {
         this.type = dto.getType();
         this.price = dto.getPrice();
         this.hotel = hotel;
+        if (hotel != null){
+            this.hotelId = hotel.getId();
+        }
     }
 
 }

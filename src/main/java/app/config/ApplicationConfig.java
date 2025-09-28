@@ -2,6 +2,7 @@ package app.config;
 
 import app.exceptions.HotelNotFoundException;
 import app.exceptions.RoomNotFoundException;
+import app.populators.HotelPopulator;
 import app.routes.Routes;
 import io.javalin.Javalin;
 import io.javalin.config.JavalinConfig;
@@ -21,6 +22,15 @@ public class ApplicationConfig {
     public static Javalin startServer(int port) {
         routes = new Routes();
         var app = Javalin.create(ApplicationConfig::configuration);
+
+        // Tilføjet så jeg populerer listerne af hoteller og værelser før serveren starter
+        var emf = HibernateConfig.getEntityManagerFactory();
+        try (var em = emf.createEntityManager()) {
+            long count = em.createQuery("SELECT COUNT(h) FROM Hotel h", Long.class).getSingleResult();
+            if (count == 0) {
+                HotelPopulator.populateHotels();
+            }
+        }
 
         // Tilføjet errorhandling (PT3 i opagven)
         app.exception(IllegalArgumentException.class, (e, ctx) -> {
