@@ -1,13 +1,13 @@
 package app.routes;
 
-import app.controllers.SampleController;
+import app.controllers.HotelController;
 import io.javalin.apibuilder.EndpointGroup;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 
 public class Sample2Routes {
-    SampleController controller = new SampleController();
+    HotelController controller = new HotelController();
 
     public EndpointGroup getRoutes(){
         return () -> {

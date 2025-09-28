@@ -7,13 +7,13 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 
 public class Routes {
 
-private Sample1Routes sample1Routes = new Sample1Routes();
+private HotelRoutes hotelRoutes = new HotelRoutes();
 private Sample2Routes sample2Routes = new Sample2Routes();
 
 public EndpointGroup getRoutes() {
     return () -> {
         get("/", ctx -> ctx.result("Hello World"));
-        path("/sample1", sample1Routes.getRoutes());
+        path("/sample1", hotelRoutes.getRoutes());
         path("/sample2", sample2Routes.getRoutes());
     };
 }

@@ -1,73 +1,75 @@
 package app.daos;
 
-import app.dtos.SampleDTO;
-import app.entities.Sample;
+import app.dtos.HotelDTO;
+import app.entities.Hotel;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SampleDAO {
+public class HotelDAO {
 
-    private static SampleDAO instance;
+    private static HotelDAO instance;
     private static EntityManagerFactory emf;
 
-    private SampleDAO() {}
+    private HotelDAO() {}
 
-    public static SampleDAO getInstance(EntityManagerFactory emf) {
+    public static HotelDAO getInstance(EntityManagerFactory emf) {
         if (instance == null) {
-            instance = new SampleDAO();
-            SampleDAO.emf = emf;
+            instance = new HotelDAO();
+            HotelDAO.emf = emf;
         }
         return instance;
     }
 
-    public List<SampleDTO> getAllSamples() {
+    public List<HotelDTO> getAllHotels() {
         try (var em = emf.createEntityManager()) {
-            TypedQuery<Sample> query = em.createQuery("SELECT s FROM Sample s", Sample.class);
-            return SampleDTO.toDTOList(query.getResultList());
+            TypedQuery<Hotel> query = em.createQuery("SELECT h FROM Hotel h", Hotel.class);
+            return HotelDTO.toDTOList(query.getResultList());
         }
     }
 
-    public SampleDTO create(SampleDTO dto) {
-        var entity = new Sample(dto);
+    public HotelDTO create(HotelDTO dto) {
+        var entity = new Hotel(dto);
         try (var em = emf.createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
             em.persist(entity);
             tx.commit();
-            return new SampleDTO(entity);
+            return new HotelDTO(entity);
         }
     }
 
-    public List<SampleDTO> createFromList(SampleDTO[] dtos) {
-        List<SampleDTO> createdList = new ArrayList<>();
-        for (SampleDTO dto : dtos) {
+    public List<HotelDTO> createFromList(HotelDTO[] dtos) {
+        List<HotelDTO> createdList = new ArrayList<>();
+        for (HotelDTO dto : dtos) {
             createdList.add(create(dto));
         }
         return createdList;
     }
 
-    public SampleDTO getById(int id) {
+    public HotelDTO getById(int id) {
         try (var em = emf.createEntityManager()) {
-            var entity = em.find(Sample.class, id);
-            return (entity != null) ? new SampleDTO(entity) : null;
+            var entity = em.find(Hotel.class, id);
+            return (entity != null) ? new HotelDTO(entity) : null;
         }
     }
 
     // Note: returns null if entity not found
-    public SampleDTO update(int id, SampleDTO dto) {
+    public HotelDTO update(int id, HotelDTO dto) {
         try (var em = emf.createEntityManager()) {
-            Sample entity = em.find(Sample.class, id);
+            Hotel entity = em.find(Hotel.class, id);
             if (entity != null) {
                 var tx = em.getTransaction();
                 tx.begin();
-                entity.setUserName(dto.getUserName());
-                entity.setSampleNumber(dto.getSampleNumber());
+                entity.setName(dto.getName());
+                entity.setAddress(dto.getAddress());
+                entity.setRooms(dto.getRooms());
+                entity.setStars(dto.getStars());
                 em.merge(entity);
                 tx.commit();
-                return new SampleDTO(entity);
+                return new HotelDTO(entity);
             }
             return null;
         }
@@ -77,7 +79,7 @@ public class SampleDAO {
         try (var em = emf.createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
-            var entity = em.find(Sample.class, id);
+            var entity = em.find(Hotel.class, id);
             if (entity != null) {
                 em.remove(entity);
             }
@@ -89,7 +91,7 @@ public class SampleDAO {
         try (var em = emf.createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
-            em.createQuery("DELETE FROM Sample").executeUpdate();
+            em.createQuery("DELETE FROM Hotel").executeUpdate();
             tx.commit();
         }
     }
