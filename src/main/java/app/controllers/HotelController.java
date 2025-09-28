@@ -22,14 +22,15 @@ public class HotelController {
     private static final Logger debugLogger = LoggerFactory.getLogger("app");
 
     public void createHotel(Context ctx) {
-        HotelDTO[] hotelDTOS = ctx.bodyAsClass(HotelDTO[].class);
+        HotelDTO dto = ctx.bodyAsClass(HotelDTO.class);
+        HotelDTO newHotel = hotelDAO.createHotel(dto);
 
-        List<HotelDTO> newHotelDTOS = hotelDAO.createHotelsFromList(hotelDTOS);
         ctx.status(HttpStatus.CREATED);
-        ctx.json(newHotelDTOS);
+        ctx.json(newHotel);
 
-        logger.info("Created {} new hotels", newHotelDTOS.size());
+        logger.info("Created hotel '{}'", newHotel.getName());
     }
+
 
     public void getAllHotels(Context ctx) {
         List<HotelDTO> hotelDTOS = hotelDAO.getAllHotels();

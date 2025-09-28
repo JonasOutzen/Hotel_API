@@ -37,6 +37,7 @@ public class Hotel {
         this.address = dto.getAddress();
         this.rooms = dto.getRooms();
         this.stars = dto.getStars();
+        this.roomSet = new HashSet<>();
     }
 
     // 1:m relationer
