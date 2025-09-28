@@ -42,6 +42,7 @@ public class RoomDAO {
         var entity = new Room();
         entity.setNumber(dto.getNumber());
         entity.setPrice(dto.getPrice());
+        entity.setType(dto.getType());
         // hotel relation should be set separately (through HotelDAO.addRoom)
         try (var em = emf.createEntityManager()) {
             var tx = em.getTransaction();
@@ -69,6 +70,7 @@ public class RoomDAO {
                 tx.begin();
                 entity.setNumber(dto.getNumber());
                 entity.setPrice(dto.getPrice());
+                entity.setType(dto.getType());
                 em.merge(entity);
                 tx.commit();
                 return new RoomDTO(entity);
