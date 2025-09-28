@@ -8,13 +8,13 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 public class Routes {
 
 private HotelRoutes hotelRoutes = new HotelRoutes();
-private Sample2Routes sample2Routes = new Sample2Routes();
+private RoomRoutes roomRoutes = new RoomRoutes();
 
 public EndpointGroup getRoutes() {
     return () -> {
         get("/", ctx -> ctx.result("Hello World"));
-        path("/sample1", hotelRoutes.getRoutes());
-        path("/sample2", sample2Routes.getRoutes());
+        path("/hotel", hotelRoutes.getRoutes());
+        path("/room", roomRoutes.getRoutes());
     };
 }
 }

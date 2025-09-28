@@ -28,38 +28,38 @@ class HotelDAOTest {
     @Test
     void testCreateAndGetById() {
         HotelDTO dto = new HotelDTO(null, "Hotel California", "California st. 8840", 221, 5);
-        HotelDTO saved = dao.create(dto);
+        HotelDTO saved = dao.createHotel(dto);
 
         assertNotNull(saved.getId());
         assertEquals("Alice", saved.getName());
 
-        HotelDTO fetched = dao.getById(saved.getId());
+        HotelDTO fetched = dao.getHotelById(saved.getId());
         assertEquals(saved.getName(), fetched.getName());
     }
 
     @Test
     void testGetAllHotels() {
-        dao.create(new HotelDTO(null, "Hotel California", "California st. 8840", 221, 5));
-        dao.create(new HotelDTO(null, "Hotel Balifornia", "Balifornia st. 8840", 221, 5));
+        dao.createHotel(new HotelDTO(null, "Hotel California", "California st. 8840", 221, 5));
+        dao.createHotel(new HotelDTO(null, "Hotel Balifornia", "Balifornia st. 8840", 221, 5));
 
         List<HotelDTO> list = dao.getAllHotels();
         assertEquals(2, list.size());
     }
 
     @Test
-    void testUpdateSample() {
-        HotelDTO saved = dao.create(new HotelDTO(null, "Hotel Aalifornia", "Aalifornia st. 8840", 221, 5));
-        HotelDTO updated = dao.update(saved.getId(), new HotelDTO(null, "Botel", "California st. 8840", 33, 5));
+    void testUpdateHotel() {
+        HotelDTO saved = dao.createHotel(new HotelDTO(null, "Hotel Aalifornia", "Aalifornia st. 8840", 221, 5));
+        HotelDTO updated = dao.createHotel(new HotelDTO(saved.getId(), "Botel", "California st. 8840", 33, 5));
 
         assertEquals("Botel", updated.getName());
         assertEquals(33, updated.getRooms());
     }
 
     @Test
-    void testDeleteSample() {
-        HotelDTO saved = dao.create(new HotelDTO(null, "Hotel Danglatere", "Et sted i københavn", 221, 5));
-        dao.delete(saved.getId());
+    void testDeleteHotel() {
+        HotelDTO saved = dao.createHotel(new HotelDTO(null, "Hotel Danglatere", "Et sted i københavn", 221, 5));
+        dao.deleteHotel(saved.getId());
 
-        assertNull(dao.getById(saved.getId()));
+        assertNull(dao.getHotelById(saved.getId()));
     }
 }

@@ -3,9 +3,11 @@ package app.controllers;
 import app.config.HibernateConfig;
 import app.daos.HotelDAO;
 import app.dtos.HotelDTO;
+import app.dtos.RoomDTO;
 import jakarta.persistence.EntityManagerFactory;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,28 +23,28 @@ public class HotelController {
     private static final Logger logger = LoggerFactory.getLogger(HotelController.class);
     private static final Logger debugLogger = LoggerFactory.getLogger("app");
 
-    public void createSample(Context ctx) {
+    public void createHotel(Context ctx) {
         HotelDTO[] hotelDTOS = ctx.bodyAsClass(HotelDTO[].class);
 
-        List<HotelDTO> newHotelDTOS = hotelDAO.createFromList(hotelDTOS);
+        List<HotelDTO> newHotelDTOS = hotelDAO.createHotelsFromList(hotelDTOS);
         ctx.status(HttpStatus.CREATED);
         ctx.json(newHotelDTOS);
     }
 
-    public void getAllSamples(Context ctx) {
+    public void getAllHotels(Context ctx) {
         List<HotelDTO> hotelDTOS = hotelDAO.getAllHotels();
         ctx.status(HttpStatus.OK);
         ctx.json(hotelDTOS);
-        logger.info("Fetched all samples, count: "  + hotelDTOS.size());
+        logger.info("Fetched all hotels, count: "  + hotelDTOS.size());
     }
 
-    public void getSampleById(Context ctx) {
+    public void getHotelById(Context ctx) {
         int id = Integer.parseInt(ctx.pathParam("id"));
-        HotelDTO hotelDTO = hotelDAO.getById(id);
+        HotelDTO hotelDTO = hotelDAO.getHotelById(id);
         if (hotelDTO != null) {
             ctx.status(HttpStatus.OK);
             ctx.json(hotelDTO);
-            logger.info("Fetched sample with id: " + id);
+            logger.info("Fetched hotel with id: " + id);
         } else {
             ctx.status(HttpStatus.NOT_FOUND);
             ctx.json(Map.of("error", "Hotel with id " + id + " not found"));
@@ -50,17 +52,23 @@ public class HotelController {
     }
     }
 
-    public void updateSample(Context ctx) {
+    public void updateHotel(Context ctx) {
         int id = Integer.parseInt(ctx.pathParam("id"));
         HotelDTO hotelDTO = ctx.bodyAsClass(HotelDTO.class);
-        hotelDTO = hotelDAO.update(id, hotelDTO);
+        hotelDTO = hotelDAO.updateHotel(id, hotelDTO);
         ctx.status(HttpStatus.OK);
         ctx.json(hotelDTO);
     }
 
-    public void deleteSample(Context ctx) {
+    public void deleteHotel(Context ctx) {
         int id = Integer.parseInt(ctx.pathParam("id"));
-        hotelDAO.delete(id);
+        hotelDAO.deleteHotel(id);
         ctx.result("Hotel with id " + id + " deleted");
+    }
+
+    public void getRoomsForHotel(Context ctx) {
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        List<RoomDTO> roomDTOS = hotelDAO.getRoomsForHotel(id);
+        ctx.json(roomDTOS);
     }
 }

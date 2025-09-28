@@ -53,6 +53,14 @@ public class HotelDAO implements IHotelDAO {
         }
     }
 
+    public List<HotelDTO> createHotelsFromList(HotelDTO[] dtos) {
+        List<HotelDTO> hotelDTOS = new ArrayList<>();
+        for (HotelDTO dto : dtos) {
+            hotelDTOS.add(createHotel(dto));
+        }
+        return hotelDTOS;
+    }
+
     @Override
     public HotelDTO updateHotel(int id, HotelDTO dto) {
         try (var em = emf.createEntityManager()) {
