@@ -53,12 +53,13 @@ public class RoomDAO {
     }
 
     public List<RoomDTO> createRoomsFromList(RoomDTO[] dtos) {
-        List<RoomDTO> roomDTOS = new ArrayList<>();
+        List<RoomDTO> newRoomDTOs = new ArrayList<>();
         for (RoomDTO dto : dtos) {
-            roomDTOS.add(createRoom(dto));
+            newRoomDTOs.add(createRoom(dto));
         }
-        return roomDTOS;
+        return newRoomDTOs;
     }
+
 
     public RoomDTO updateRoom(int id, RoomDTO dto) {
         try (var em = emf.createEntityManager()) {

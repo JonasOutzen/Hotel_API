@@ -15,6 +15,8 @@ public class RoomRoutes {
             get("/", controller::getAllRooms);
             get("/{id}", controller::getRoomById);
             post("/", controller::createRoom);
+            put("/{id}", controller::updateRoom);
+            delete("/{id}", controller::deleteRoom);
         };
     }
 }

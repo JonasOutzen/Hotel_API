@@ -7,8 +7,8 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 
 public class Routes {
 
-private HotelRoutes hotelRoutes = new HotelRoutes();
-private RoomRoutes roomRoutes = new RoomRoutes();
+private final HotelRoutes hotelRoutes = new HotelRoutes();
+private final RoomRoutes roomRoutes = new RoomRoutes();
 
 public EndpointGroup getRoutes() {
     return () -> {
