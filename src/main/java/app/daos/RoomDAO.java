@@ -2,6 +2,7 @@ package app.daos;
 
 import app.dtos.HotelDTO;
 import app.dtos.RoomDTO;
+import app.entities.Hotel;
 import app.entities.Room;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
@@ -39,19 +40,29 @@ public class RoomDAO {
     }
 
     public RoomDTO createRoom(RoomDTO dto) {
-        var entity = new Room();
-        entity.setNumber(dto.getNumber());
-        entity.setPrice(dto.getPrice());
-        entity.setType(dto.getType());
-        // hotel relation should be set separately (through HotelDAO.addRoom)
         try (var em = emf.createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
-            em.persist(entity);
+
+            Hotel hotel = em.find(Hotel.class, dto.getHotelId());
+            if (hotel == null) {
+                tx.rollback();
+                return null;
+            }
+
+            Room room = new Room();
+            room.setNumber(dto.getNumber());
+            room.setPrice(dto.getPrice());
+            room.setType(dto.getType());
+            room.setHotel(hotel);
+
+            em.persist(room);
             tx.commit();
-            return new RoomDTO(entity);
+
+            return new RoomDTO(room);
         }
     }
+
 
     public List<RoomDTO> createRoomsFromList(RoomDTO[] dtos) {
         List<RoomDTO> newRoomDTOs = new ArrayList<>();
@@ -79,17 +90,24 @@ public class RoomDAO {
         }
     }
 
-    public void deleteRoom(int id) {
+    public void deleteRoom(int roomId) {
         try (var em = emf.createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
-            var entity = em.find(Room.class, id);
-            if (entity != null) {
-                em.remove(entity);
+
+            Room room = em.find(Room.class, roomId);
+            if (room != null) {
+                Hotel hotel = room.getHotel();
+                if (hotel != null) {
+                    hotel.getRoomSet().remove(room);
+                }
+                em.remove(room);
             }
+
             tx.commit();
         }
     }
+
 
     public void deleteAllRooms() {
         try (var em = emf.createEntityManager()) {

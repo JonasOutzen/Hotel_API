@@ -16,16 +16,16 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="hotel_id", insertable = false, updatable = false)
+    @Column(name = "hotel_id", insertable = false, updatable = false)
     private int hotelId;
 
-    @Column(name="number", nullable = false)
+    @Column(name = "number", nullable = false)
     private Integer number;
 
-    @Column(name="price", nullable = false)
+    @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name="type", nullable = false)
+    @Column(name = "type", nullable = false)
     private String type;
 
     // Relationer m:1
@@ -37,15 +37,15 @@ public class Room {
 
     public Room(RoomDTO dto, Hotel hotel) {
         this.id = dto.getId();
-        this.hotelId = dto.getHotelId();
         this.number = dto.getNumber();
         this.type = dto.getType();
         this.price = dto.getPrice();
         this.hotel = hotel;
-        if (hotel != null){
-            this.hotelId = hotel.getId();
-        }
     }
 
+    // Convenience getter for hotelId (useful for DTO mapping)
+    public int getHotelId() {
+        return hotel != null ? hotel.getId() : 0;
+    }
 }
 

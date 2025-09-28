@@ -108,15 +108,20 @@ public class HotelDAO implements IHotelDAO {
             Room room = new Room();
             room.setNumber(roomDto.getNumber());
             room.setPrice(roomDto.getPrice());
+            room.setType(roomDto.getType());
             room.setHotel(hotel);
 
+            // Add room to hotel’s collection
             hotel.getRoomSet().add(room);
 
-            em.merge(hotel);
+            // Persist the new room explicitly
+            em.persist(room);
+
             tx.commit();
             return new HotelDTO(hotel);
         }
     }
+
 
     @Override
     public HotelDTO removeRoom(int hotelId, int roomId) {
@@ -158,6 +163,7 @@ public class HotelDAO implements IHotelDAO {
         try (var em = emf.createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
+            em.createQuery("DELETE FROM Room").executeUpdate();
             em.createQuery("DELETE FROM Hotel").executeUpdate();
             tx.commit();
         }
